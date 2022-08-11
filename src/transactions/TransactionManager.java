@@ -10,24 +10,24 @@ public class TransactionManager {
 
 	Map<String, Place> placeMap = new HashMap<>();
 	Map<String, Region> regionMap = new HashMap<>();
+	Map<String, Carrier> carrierMap = new HashMap<>();
 
 //R1
 	public List<String> addRegion(String regionName, String... placeNames) {
-
 		Region region = new Region(regionName);
 		regionMap.put(regionName, region);
-		for (String placeName : placeNames) {
-			Place place = new Place(placeName);
-			if (!placeMap.containsKey(placeName)) {
-				region.getPlaces().add(place);
-			}
-			placeMap.put(placeName, place);
-		}
+		Stream.of(placeNames).filter(placeName -> !placeMap.containsKey(placeName)).map(Place::new).forEach(place -> {
+			region.getPlaces().add(place);
+			placeMap.put(place.getName(), place);
+		});
 		return region.getPlaces().stream().map(Place::getName).sorted().toList();
 	}
 	
-	public List<String> addCarrier(String carrierName, String... regionNames) { 
-		return new ArrayList<String>();
+	public List<String> addCarrier(String carrierName, String... regionNames) {
+		Carrier carrier = new Carrier(carrierName);
+		carrierMap.put(carrierName, carrier);
+		Stream.of(regionNames).forEach(r -> carrier.getRegions().add(regionMap.get(r)));
+		return carrier.getRegions().stream().map(Region::getName).sorted().toList();
 	}
 	
 	public List<String> getCarriersForRegion(String regionName) { 

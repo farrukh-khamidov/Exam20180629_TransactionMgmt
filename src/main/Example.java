@@ -15,6 +15,7 @@ public class Example {
 	list1 = tm.addRegion("reg1", "pl3", "pl1", "pl5");
 		print(list1); //[pl1, pl3, pl5] 
 	list1 = tm.addRegion("reg2", "pl4", "pl8", "pl6");
+		print(list1);
 	list1= tm.addRegion("reg7", "pl4", "pl7", "pl7", "pl2");
 		print(list1); //[pl2, pl7]
 	tm.addCarrier("c4", "reg1", "reg7");

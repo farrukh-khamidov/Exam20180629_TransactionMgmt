@@ -69,6 +69,9 @@ public class Example {
 	tm.evaluateTransaction("t3",8);
 	tm.evaluateTransaction("t4",7);
 
+
+		System.out.println(tm.getTransactionMap());
+
 //R4
 	print("R4");
 	SortedMap<Long, List<String>> m1 = tm.deliveryRegionsPerNT();

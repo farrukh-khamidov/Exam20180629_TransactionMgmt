@@ -26,27 +26,25 @@ public class TransactionManager {
 	public List<String> addCarrier(String carrierName, String... regionNames) {
 		Carrier carrier = new Carrier(carrierName);
 		carrierMap.put(carrierName, carrier);
-		Stream.of(regionNames).forEach(r -> carrier.getRegions().add(regionMap.get(r)));
+		Stream.of(regionNames).filter(r -> regionMap.containsKey(r)).forEach(r -> carrier.getRegions().add(regionMap.get(r)));
 		return carrier.getRegions().stream().map(Region::getName).sorted().toList();
 	}
 	
 	public List<String> getCarriersForRegion(String regionName) { 
-		return new ArrayList<String>();
+		return carrierMap.values().stream().filter(carrier -> carrier.getRegions().stream().map(Region::getName)
+				.collect(Collectors.toSet()).contains(regionName)).map(Carrier::getName).sorted().toList();
 	}
 	
 //R2
-	public void addRequest(String requestId, String placeName, String productId) 
-			throws TMException {
+	public void addRequest(String requestId, String placeName, String productId)  throws TMException {
 	}
 	
-	public void addOffer(String offerId, String placeName, String productId) 
-			throws TMException {
+	public void addOffer(String offerId, String placeName, String productId)  throws TMException {
 	}
 	
 
 //R3
-	public void addTransaction(String transactionId, String carrierName, String requestId, String offerId) 
-			throws TMException {
+	public void addTransaction(String transactionId, String carrierName, String requestId, String offerId)  throws TMException {
 	}
 	
 	public boolean evaluateTransaction(String transactionId, int score) {

@@ -106,7 +106,29 @@ public class TransactionManager {
 //R4
 	public SortedMap<Long, List<String>> deliveryRegionsPerNT() {
 
-		return new TreeMap<Long, List<String>>();
+		Map<String, Long> map = new HashMap<>();
+		for (Transaction transaction : transactionMap.values()) {
+			String regionName = transaction.getRequest().getPlace().getRegion().getName();
+			if (!map.containsKey(regionName)){
+				map.put(regionName, 1L);
+			} else {
+				map.put(regionName, map.get(regionName) + 1);
+			}
+		}
+
+		SortedMap<Long, List<String>> result = new TreeMap<>((o1, o2) -> (int) (o2-o1));
+		map.forEach((k, v) -> {
+			if (!result.containsKey(v)) {
+				List<String> list = new ArrayList<>();
+				list.add(k);
+				result.put(v, list);
+			} else {
+				result.get(v).add(k);
+				Collections.sort(result.get(v));
+			}
+		});
+
+		return result;
 	}
 	
 	public SortedMap<String, Integer> scorePerCarrier(int minimumScore) {
